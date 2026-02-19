@@ -1,0 +1,236 @@
+/* style.css  ─  ProcessManager custom styles */
+
+/* ─── Reset / base ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pm-header-h:  60px;
+  --pm-bg:        #f0f2f5;
+  --pm-header-bg: #ffffff;
+  --pm-border:    #e4e7ed;
+  --pm-shadow:    0 2px 12px rgba(0,0,0,.08);
+  --pm-radius:    8px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: var(--pm-bg);
+  color: #303133;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.pm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--pm-header-h);
+  padding: 0 20px;
+  background: var(--pm-header-bg);
+  border-bottom: 1px solid var(--pm-border);
+  box-shadow: var(--pm-shadow);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.pm-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pm-header__icon {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--el-color-primary);
+}
+
+.pm-header__title {
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #409eff, #6c5ce7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: .5px;
+}
+
+.pm-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ─── Main content ────────────────────────────────────────────────────────── */
+.pm-main {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
+
+.pm-empty {
+  margin-top: 80px;
+}
+
+/* ─── Table ──────────────────────────────────────────────────────────────── */
+.pm-table {
+  border-radius: var(--pm-radius);
+  overflow: hidden;
+  box-shadow: var(--pm-shadow);
+  background: #fff;
+}
+
+.pm-table .el-table__row {
+  transition: background .15s;
+}
+
+.proc-name {
+  font-weight: 600;
+  color: #303133;
+}
+
+.proc-path {
+  font-size: 12px;
+  color: #909399;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.delay-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #e6f4ff;
+  color: #409eff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.text-muted { color: #c0c4cc; font-size: 13px; }
+.pid-badge  { font-size: 12px; color: #409eff; font-family: monospace; letter-spacing: 0.5px; }
+
+/* ─── Status dots ─────────────────────────────────────────────────────────── */
+.status-dot {
+  display: block;
+  width: 6px;
+  height: 100%;
+  min-height: 40px;
+}
+.status-dot--running    { background: #67c23a; }
+.status-dot--stopped    { background: #c0c4cc; }
+.status-dot--starting   { background: #e6a23c; }
+.status-dot--restarting { background: #409eff; }
+.status-dot--failed     { background: #f56c6c; }
+
+.status-dot-sm {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.status-dot-sm.status-dot--running {
+  background: #67c23a;
+  box-shadow: 0 0 0 3px rgba(103,194,58,.2);
+  animation: pulse-green 1.6s infinite;
+}
+.status-dot-sm.status-dot--stopped    { background: #c0c4cc; }
+.status-dot-sm.status-dot--starting  {
+  background: #e6a23c;
+  animation: pulse-orange 1s infinite;
+}
+.status-dot-sm.status-dot--restarting {
+  background: #409eff;
+  animation: pulse-blue 1s infinite;
+}
+.status-dot-sm.status-dot--failed {
+  background: #f56c6c;
+  box-shadow: 0 0 0 3px rgba(245,108,108,.2);
+}
+
+@keyframes pulse-green  { 0%,100%{ box-shadow:0 0 0 0 rgba(103,194,58,.4) } 50%{ box-shadow:0 0 0 5px rgba(103,194,58,0) } }
+@keyframes pulse-orange { 0%,100%{ opacity:1 } 50%{ opacity:.4 } }
+@keyframes pulse-blue   { 0%,100%{ opacity:1 } 50%{ opacity:.4 } }
+
+.status-dot-col .cell { padding: 0 !important; }
+
+/* ─── Guard icons ─────────────────────────────────────────────────────────── */
+.guard-on  { color: #67c23a; font-size: 16px; }
+.guard-off { color: #c0c4cc; font-size: 16px; }
+
+/* ─── Status tag ──────────────────────────────────────────────────────────── */
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ─── FAB ────────────────────────────────────────────────────────────────── */
+.pm-fab {
+  position: fixed !important;
+  right: 32px;
+  bottom: 32px;
+  width: 52px !important;
+  height: 52px !important;
+  font-size: 22px !important;
+  box-shadow: 0 4px 16px rgba(64,158,255,.4) !important;
+  transition: transform .2s, box-shadow .2s !important;
+  z-index: 100;
+}
+.pm-fab:hover {
+  transform: scale(1.1) rotate(90deg) !important;
+  box-shadow: 0 6px 20px rgba(64,158,255,.5) !important;
+}
+
+/* ─── Form helpers ────────────────────────────────────────────────────────── */
+.path-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.path-row .el-input { flex: 1; }
+
+.unit-label {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #909399;
+  white-space: nowrap;
+}
+
+.setting-hint {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
+}
+
+/* ─── Dialog tweaks ───────────────────────────────────────────────────────── */
+.el-dialog {
+  border-radius: var(--pm-radius) !important;
+}
+.el-dialog__header {
+  border-bottom: 1px solid var(--pm-border);
+  margin-bottom: 0 !important;
+  padding: 16px 20px !important;
+}
+.el-dialog__body { padding: 20px !important; }
+.el-dialog__footer {
+  border-top: 1px solid var(--pm-border);
+  padding: 12px 20px !important;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c0c4cc; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #909399; }

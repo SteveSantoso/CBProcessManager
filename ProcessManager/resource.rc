@@ -1,0 +1,5 @@
+// resource.rc
+#include "resource.h"
+
+IDI_APPICON ICON "icon.ico"
+IDI_TRAY    ICON "icon.ico"

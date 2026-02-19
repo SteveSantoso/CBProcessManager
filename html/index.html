@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>进程管理器</title>
+  <!-- 可视化错误层（用于调试，上线时可删除） -->
+  <style>
+    #pm-error{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;
+      background:#fff3f3;color:#c00;padding:20px;font:14px/1.6 monospace;overflow:auto;white-space:pre-wrap;}
+  </style>
+  <!-- 最早设置 onerror，捕获所有脚本加载错误 -->
+  <script>
+    window.onerror = function(msg, src, line, col, err) {
+      var el = document.getElementById('pm-error');
+      if (el) { el.style.display='block'; el.textContent += '[JS Error] '+msg+'\n  '+src+':'+line+':'+col+'\n'+(err?err.stack:'')+'\n\n'; }
+      return false;
+    };
+    window.addEventListener('unhandledrejection', function(e) {
+      var el = document.getElementById('pm-error');
+      if (el) { el.style.display='block'; el.textContent += '[Promise] '+(e.reason||e)+'\n\n'; }
+    });
+  </script>
+  <!-- Element Plus CSS (local) -->
+  <link rel="stylesheet" href="element-plus.css" />
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="pm-error"></div>
+  <div id="app"></div>
+
+  <!-- Scripts (local) -->
+  <script src="vue.global.prod.js"></script>
+  <script src="element-plus.min.js"></script>
+  <script src="element-plus-icons.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
