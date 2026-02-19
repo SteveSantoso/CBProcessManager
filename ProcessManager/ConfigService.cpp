@@ -90,6 +90,7 @@ bool ConfigService::load() {
                 p.guardEnabled     = pv.contains("guardEnabled")     ? pv["guardEnabled"].get_bool_or(true) : true;
                 p.guardDelaySeconds= pv.contains("guardDelaySeconds")? pv["guardDelaySeconds"].get_int_or(3) : 3;
                 p.enabled          = pv.contains("enabled")          ? pv["enabled"].get_bool_or(true)  : true;
+                p.background       = pv.contains("background")       ? pv["background"].get_bool_or(false) : false;
                 m_config.processes.push_back(std::move(p));
             }
         }
@@ -121,6 +122,7 @@ std::string ConfigService::processConfigToJson(const ProcessConfig& p) {
     obj["guardEnabled"]     = p.guardEnabled;
     obj["guardDelaySeconds"]= p.guardDelaySeconds;
     obj["enabled"]          = p.enabled;
+    obj["background"]       = p.background;
     return sj::stringify(sj::Value(obj));
 }
 
@@ -139,6 +141,7 @@ std::string ConfigService::appConfigToJson(const AppConfig& cfg) {
         obj["guardEnabled"]     = p.guardEnabled;
         obj["guardDelaySeconds"]= p.guardDelaySeconds;
         obj["enabled"]          = p.enabled;
+        obj["background"]       = p.background;
         arr.push_back(sj::Value(obj));
     }
     root["processes"] = arr;

@@ -233,7 +233,9 @@ int APIENTRY wWinMain(
 
     if (!hwnd) return -1;
 
-    ShowWindow(hwnd, nCmdShow);
+    // 默认隐藏到系统托盘，不弹出主界面
+    // 用户可双击托盘图标或从右键菜单选择"显示窗口"来打开界面
+    ShowWindow(hwnd, SW_HIDE);
     UpdateWindow(hwnd);
 
     // 消息循环

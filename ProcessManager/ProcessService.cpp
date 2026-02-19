@@ -191,6 +191,15 @@ bool ProcessService::launchNow(const std::string& id) {
     si.cb = sizeof(si);
     PROCESS_INFORMATION pi = {};
 
+    // 后台进程：隐藏控制台窗口
+    DWORD createFlags = CREATE_SUSPENDED;
+    if (cfg.background) {
+        createFlags |= CREATE_NO_WINDOW;
+        si.dwFlags    |= STARTF_USESHOWWINDOW;
+        si.wShowWindow = SW_HIDE;
+        pmLogF(L"[进程] %-20S  后台模式（无控制台窗口）", id.c_str());
+    }
+
     std::vector<wchar_t> cmdBuf(cmdLine.begin(), cmdLine.end());
     cmdBuf.push_back(L'\0');
 
@@ -199,7 +208,7 @@ bool ProcessService::launchNow(const std::string& id) {
     BOOL ok = CreateProcessW(
         nullptr, cmdBuf.data(),
         nullptr, nullptr, FALSE,
-        CREATE_SUSPENDED, nullptr,
+        createFlags, nullptr,
         workDir.empty() ? nullptr : workDir.c_str(),  // 工作目录设为 bat/exe 所在目录
         &si, &pi);
 

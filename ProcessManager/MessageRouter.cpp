@@ -87,6 +87,7 @@ void MessageRouter::pushProcessList() {
         obj["guardEnabled"]     = p.guardEnabled;
         obj["guardDelaySeconds"]= p.guardDelaySeconds;
         obj["enabled"]          = p.enabled;
+        obj["background"]       = p.background;
         obj["status"]           = std::string(statusStr(ProcessService::instance().getStatus(p.id)));
         obj["pid"]              = (int)ProcessService::instance().getPid(p.id);
         arr.push_back(sj::Value(std::move(obj)));
@@ -133,6 +134,7 @@ void MessageRouter::handleAddProcess(const std::string& jsonObj) {
     p.guardEnabled     = pv.contains("guardEnabled")     ? pv["guardEnabled"].get_bool_or(true) : true;
     p.guardDelaySeconds= pv.contains("guardDelaySeconds")? pv["guardDelaySeconds"].get_int_or(3) : 3;
     p.enabled          = pv.contains("enabled")          ? pv["enabled"].get_bool_or(true) : true;
+    p.background       = pv.contains("background")       ? pv["background"].get_bool_or(false) : false;
 
     ConfigService::instance().config().processes.push_back(p);
     ConfigService::instance().save();
@@ -162,6 +164,7 @@ void MessageRouter::handleUpdateProcess(const std::string& jsonObj) {
     if (pv.contains("guardEnabled"))     it->guardEnabled     = pv["guardEnabled"].get_bool_or(it->guardEnabled);
     if (pv.contains("guardDelaySeconds"))it->guardDelaySeconds= pv["guardDelaySeconds"].get_int_or(it->guardDelaySeconds);
     if (pv.contains("enabled"))          it->enabled          = pv["enabled"].get_bool_or(it->enabled);
+    if (pv.contains("background"))       it->background       = pv["background"].get_bool_or(it->background);
 
     ConfigService::instance().save();
     pushProcessList();

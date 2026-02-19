@@ -15,6 +15,7 @@ struct ProcessConfig {
     bool        guardEnabled      = true;
     int         guardDelaySeconds = 1;
     bool        enabled           = true;
+    bool        background        = false; // 后台进程：启动时不创建控制台窗口
 };
 
 struct AppConfig {

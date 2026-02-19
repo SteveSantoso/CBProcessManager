@@ -93,6 +93,14 @@ const App = {
             </el-tooltip>
           </template>
         </el-table-column>
+        <el-table-column label="后台" width="60" align="center">
+          <template #default="{ row }">
+            <el-tooltip :content="row.background ? '后台运行（无控制台）' : '普通窗口'" placement="top">
+              <el-tag v-if="row.background" type="info" size="small" effect="plain">后台</el-tag>
+              <span v-else class="text-muted">—</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column label="状态" width="110" align="center">
           <template #default="{ row }">
             <el-tag :type="statusType(row.status)" size="small" effect="light" class="status-tag">
@@ -181,6 +189,10 @@ const App = {
                      active-text="包含在全部启动中" inactive-text="跳过">
           </el-switch>
         </el-form-item>
+        <el-form-item label="后台进程">
+          <el-switch v-model="form.background" active-text="后台运行" inactive-text="普通"></el-switch>
+          <div class="setting-hint" style="margin-top:4px;">启用后进程将在后台静默运行，不显示控制台/命令行窗口（适合 Node.js 等服务进程）</div>
+        </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -225,6 +237,7 @@ const App = {
       guardEnabled:     true,
       guardDelaySeconds:1,
       enabled:          true,
+      background:       false,
     });
     const rules = {
       name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
@@ -269,7 +282,7 @@ const App = {
       dialogMode.value = 'add';
       Object.assign(form, {
         id: '', name: '', path: '', type: 'exe', args: '',
-        delaySeconds: 0, guardEnabled: true, guardDelaySeconds: 1, enabled: true
+        delaySeconds: 0, guardEnabled: true, guardDelaySeconds: 1, enabled: true, background: false
       });
       dialogVisible.value = true;
     }
@@ -307,6 +320,7 @@ const App = {
           guardEnabled:     form.guardEnabled,
           guardDelaySeconds:form.guardDelaySeconds,
           enabled:          form.enabled,
+          background:       form.background,
         };
         if (dialogMode.value === 'add') {
           postMsg({ action: 'addProcess', process: payload });
